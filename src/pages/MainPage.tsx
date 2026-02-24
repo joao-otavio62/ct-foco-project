@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 const teamMembers = [
   {
@@ -180,7 +181,7 @@ export function MainPage() {
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
             videoExpanded ? "scale-100" : "scale-105"
           }`}
-          src="https://www.w3schools.com/html/mov_bbb.mp4"
+          src="/public/gym.mp4"
           autoPlay
           loop
           muted
@@ -207,8 +208,8 @@ export function MainPage() {
 
           {/* Play button */}
           <button
-            className="play-btn mt-8 w-20 h-20 rounded-full border-2 border-white flex items-center justify-center group"
-            style={{ background: "rgba(220,38,38,0.15)", backdropFilter: "blur(8px)" }}
+            className="play-btn mt-8 w-20 h-20 rounded-full border-2 border-white flex items-center justify-center group cursor-pointer"
+            style={{ background: "rgba(48, 48, 48, 0.15)", backdropFilter: "blur(8px)" }}
             onClick={() => setVideoExpanded(true)}
           >
             <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
@@ -231,7 +232,9 @@ export function MainPage() {
         {/* indicador de scroll*/}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
           <div className="w-px h-16 bg-gradient-to-b from-red-600 to-transparent scroll-line" />
-          <p className="text-gray-500 text-xs tracking-widest uppercase">Arrastar</p>
+          <Link to ="#sobre" className="flex flex-col items-center gap-1">
+          <p className="text-gray-500 text-xs tracking-widest uppercase">Scroll</p>
+          </Link>
         </div>
       </section>
 
@@ -268,7 +271,7 @@ export function MainPage() {
             <div
               className={`fade-left stagger-3 flex gap-12 ${isVisible("sobre") ? "visible" : ""}`}
             >
-              {[["6h–22h", "Horário de funcionamento"], ["3", "Modalidades"], ["<15", "Alunos por turma"]].map(([val, label]) => (
+              {[["6h–22h", "Horário de funcionamento"], ["4", "Modalidades"], ["<12", "Alunos por turma"]].map(([val, label]) => (
                 <div key={label}>
                   <div className="font-display font-black text-4xl text-red-600">{val}</div>
                   <div className="text-gray-500 text-xs tracking-widest uppercase mt-1">{label}</div>
@@ -289,7 +292,7 @@ export function MainPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 font-display font-black text-5xl text-white opacity-10">FOCO</div>
             </div>
-            <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-red-600" />
+            <div className="absolute -bottom-4 -right-4 w-24 h-24" />
           </div>
         </div>
       </section>
@@ -376,7 +379,7 @@ export function MainPage() {
                 EQUIPE
               </h2>
             </div>
-            <div className={`fade-up stagger-2 flex gap-3 ${isVisible("equipe") ? "visible" : ""}`}>
+            {/* <div className={`fade-up stagger-2 flex gap-3 ${isVisible("equipe") ? "visible" : ""}`}>
               <button
                 onClick={prevSlide}
                 className="w-12 h-12 border border-neutral-700 flex items-center justify-center hover:border-red-600 hover:bg-red-600 transition-all duration-300"
@@ -389,13 +392,13 @@ export function MainPage() {
               >
                 →
               </button>
-            </div>
+            </div> */}
           </div>
 
           <div className="relative overflow-hidden">
             <div
               className="carousel-track flex"
-              style={{ transform: `translateX(-${carouselIdx * (100 / 3)}%)`, width: `${(teamMembers.length / 3) * 100}%` }}
+              style={{ transform: `translateX(-${carouselIdx * (100 / 5)}%)`, width: `${(teamMembers.length / 5) * 100}%` }}
             >
               {teamMembers.map((member, i) => (
                 <div
