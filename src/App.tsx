@@ -8,8 +8,9 @@ const App = () => {
   return (
     <Routes>
       <React.Fragment>
-        <Route element={<AdminPage />} path="/adminpage" />
+        
         <Route element={<MainPage />} path="/" />
+        <Route element={<AdminPage />} path="admin" />
         <Route element={<NotFoundPage />} path="*" />
       </React.Fragment>
     </Routes>
