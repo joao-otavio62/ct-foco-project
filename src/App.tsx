@@ -1,7 +1,5 @@
-import React from "react";
-import { Route, Routes } from "react-router";
-import { MainPage } from "./pages/MainPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage";
 import { AdminPage } from "./pages/AdminPage";
 
 const App = () => {
