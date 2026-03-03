@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import type TeamMember from "../types/TeamMembers";
 import type MembersType from "../types/MembersType";
 import api from "../api/axios";
+import axios from "axios";
 
 type View = "dashboard" | "members" | "new_member" | "staff";
 type ModalType = "addMember" | "editMember" | "addStaff" | "editStaff" | "deleteMember" | "deleteStaff" | null;
@@ -16,7 +17,7 @@ const MODALITIES = ["Funcional", "Musculação", "Pilates", "Fisioterapia"];
 const SCHEDULES = ["06:00","07:00","08:00","09:00","10:00","12:00","13:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00"];
 const ROLES = ["Head Coach", "Instrutor(a) de Funcional", "Instrutor(a) de Musculação", "Instrutor(a) de Pilates", "Fisioterapeuta", "Coordenador(a)", "Recepcionista"];
 
-// ── Ícones ────────────────────────────────────────────────────────────────
+//Ícones
 const IconDashboard = () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zm-10 9a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1v-5zm10 2a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z" /></svg>);
 const IconUsers = () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m6-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a3 3 0 10-5.477-1.5" /></svg>);
 const IconStaff = () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>);
@@ -29,7 +30,7 @@ const IconChevron = ({ dir }: { dir: "left" | "right" }) => (<svg className="w-4
 const IconUpload = () => (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>);
 const IconSpinner = () => (<svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>);
 
-// ── Componentes ───────────────────────────────────────────────────────────
+//Componentes
 const StatCard = ({ label, value, sub, accent }: { label: string; value: string | number; sub?: string; accent?: boolean }) => (
   <div className={`relative overflow-hidden border p-6 ${accent ? "border-red-800 bg-red-950/30" : "border-neutral-800 bg-neutral-950"}`}>
     {accent && <div className="absolute top-0 left-0 w-1 h-full bg-red-600" />}
@@ -49,7 +50,7 @@ const Field = ({ label, children }: { label: string; children: React.ReactNode }
 const inputCls = "w-full bg-neutral-900 border border-neutral-700 text-white px-3 py-2.5 text-sm focus:outline-none focus:border-red-600 transition-colors";
 const selectCls = inputCls + " cursor-pointer";
 
-// ── Helper: mapeia resposta da API → TeamMember ───────────────────────────
+//Helper: mapeia resposta da API → TeamMember 
 const mapStaff = (s: any): TeamMember => ({
   id: String(s.id),
   name: s.nome,
@@ -59,9 +60,10 @@ const mapStaff = (s: any): TeamMember => ({
   specialty: s.especialidade,
   status: s.status === true || s.status === "ativo" ? "ativo" : "inativo",
   fotoUrl: s.fotoUrl ?? "",
+  paymentStatus: s.paymentStatus === "paid" ? "pago" : "pendente",
 });
 
-// ── Componente principal ──────────────────────────────────────────────────
+//Componente principal 
 export function AdminPage() {
   const [view, setView] = useState<View>("dashboard");
 
@@ -90,7 +92,7 @@ export function AdminPage() {
   const [nForm, setNForm] = useState<typeof blankNewMember>(blankNewMember);
   const [nErrors, setNErrors] = useState<Record<string, string>>({});
 
-  const blankMember = { name: "", email: "", phone: "", birthDate: "", height: 170, modality: "Funcional", schedule: "07:00", status: "ativo" as const };
+  const blankMember = { name: "", email: "", phone: "", birthDate: "", height: 170, modality: "Funcional", schedule: "07:00", status: "ativo" as const, paymentStatus: "pendente" as const };
   const [mForm, setMForm] = useState<typeof blankMember>(blankMember);
 
   const blankStaff = { name: "", email: "", phone: "", role: "Instrutor(a) de Funcional", specialty: "Funcional", status: "ativo" as const };
@@ -101,11 +103,12 @@ export function AdminPage() {
   const [fotoPreview, setFotoPreview] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // ── Fetch membros ─────────────────────────────────────────────────────
+  //Fetch membros
   useEffect(() => {
     const fetchMembers = async () => {
       try {
         const { data } = await api.get("/members");
+        console.log("Raw member data:", data[0]);
         setMembers(data.map((m: any) => ({
           id: m.id,
           name: m.nome,
@@ -117,6 +120,7 @@ export function AdminPage() {
           modality: m.modalidade,
           schedule: String(m.horario).padStart(2, "0") + ":00",
           status: "ativo" as const,
+          paymentStatus: m.pagamento === "pago" ? "pago" : "pendente",
           joinedAt: m.dataEntrada,
         })));
       } catch (error) {
@@ -128,7 +132,7 @@ export function AdminPage() {
     fetchMembers();
   }, []);
 
-  // ── Fetch equipe ──────────────────────────────────────────────────────
+  // fetch equipe
   useEffect(() => {
     const fetchStaff = async () => {
       try {
@@ -143,13 +147,13 @@ export function AdminPage() {
     fetchStaff();
   }, []);
 
-  // ── Stats ─────────────────────────────────────────────────────────────
+  //Stats
   const activeMembers = members.filter(m => m.status === "ativo").length;
   const modalityCount: Record<string, number> = {};
   members.forEach(m => { modalityCount[m.modality] = (modalityCount[m.modality] || 0) + 1; });
   const topModality = Object.entries(modalityCount).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "-";
 
-  // ── Handlers gerais ───────────────────────────────────────────────────
+  //Handlers gerais
   const closeModal = () => {
     setModal(null);
     setFotoFile(null);
@@ -164,7 +168,7 @@ export function AdminPage() {
     setFotoPreview(URL.createObjectURL(file));
   };
 
-  // ── Handlers de membros ───────────────────────────────────────────────
+  //Handlers de membros
   const openAddMember = () => { setMForm(blankMember); setEditTarget(null); setModal("addMember"); };
   const openEditMember = (m: MembersType) => {
     setMForm({ name: m.name, email: m.email, phone: m.phone, birthDate: m.birthDate, height: m.height, modality: m.modality, schedule: m.schedule, status: m.status });
@@ -198,6 +202,7 @@ export function AdminPage() {
         height: data.altura, modality: data.modalidade,
         schedule: String(data.horario).padStart(2, "0") + ":00",
         status: "ativo" as const, joinedAt: data.dataEntrada,
+        paymentStatus: "pendente" as const,
       }, ...prev]);
       setRegisterSuccess(true);
       setTimeout(() => { setRegisterSuccess(false); setNForm(blankNewMember); setNErrors({}); }, 2500);
@@ -206,22 +211,67 @@ export function AdminPage() {
     }
   };
 
-  const saveMember = () => {
-    const age = calcAge(mForm.birthDate);
-    if (modal === "addMember") {
-      setMembers(prev => [{ ...mForm, id: genId(), age, joinedAt: new Date().toISOString().slice(0, 10) }, ...prev]);
-    } else if (editTarget) {
-      setMembers(prev => prev.map(m => m.id === (editTarget as MembersType).id ? { ...m, ...mForm, age } : m));
-    }
-    setModal(null);
-  };
+  const saveMember = async () => {
+  const age = calcAge(mForm.birthDate);
 
-  const deleteMember = () => {
+  if (modal === "addMember") {
+    const newMember = { ...mForm, id: genId(), age, joinedAt: new Date().toISOString().slice(0, 10) };
+    setMembers(prev => [newMember, ...prev]);
+
+    try {
+      await api.post("/members", {
+        nome: mForm.name,
+        email: mForm.email,
+        telefone: mForm.phone,
+        dataNascimento: mForm.birthDate,
+        altura: mForm.height,
+        modalidade: mForm.modality,
+        horario: parseInt(mForm.schedule.split(":")[0], 10),
+        dataEntrada: new Date().toISOString().slice(0, 10),
+        pagamento: mForm.paymentStatus === "pendente" ? "pendente" : "pago",
+      });
+    } catch (error) {
+      console.error("Erro ao criar membro:", error);
+    }
+
+  } else if (editTarget) {
+    const id = (editTarget as MembersType).id;
+    setMembers(prev =>
+      prev.map(m => m.id === id ? { ...m, ...mForm, age } : m)
+    );
+
+    try {
+      await api.put(`/members/${id}`, {
+        nome: mForm.name,
+        email: mForm.email,
+        telefone: mForm.phone,
+        dataNascimento: mForm.birthDate,
+        altura: mForm.height,
+        modalidade: mForm.modality,
+        horario: parseInt(mForm.schedule.split(":")[0], 10),
+        status: mForm.status,
+        pagamento: mForm.paymentStatus === "pendente" ? "pendente" : "pago",
+      });
+    } catch (error: any) {
+      console.error("Erro ao atualizar membro:", error);
+      alert(`Erro ${error.response?.status}: ${JSON.stringify(error.response?.data ?? error.message)}`);
+    }
+  }
+
+  setModal(null);
+};
+
+const deleteMember = async () => {
+  try {
+    await api.delete(`/members/${deleteTarget}`);
     setMembers(prev => prev.filter(m => m.id !== deleteTarget));
     setModal(null);
-  };
+  } catch (error: any) {
+    alert(`Erro ${error.response?.status}: ${JSON.stringify(error.response?.data ?? error.message)}`);
+  }
+};
 
-  // ── Handlers de equipe → chamam a API ────────────────────────────────
+  //Handlers de equipe → chamam a API 
   const openAddStaff = () => {
     setSForm(blankStaff);
     setFotoFile(null);
@@ -231,9 +281,9 @@ export function AdminPage() {
   };
 
   const openEditStaff = (s: TeamMember) => {
-    setSForm({ name: s.name, email: s.email, phone: s.phone, role: s.role, specialty: s.specialty, status: s.status });
+    setSForm({ name: s.name, email: s.email, phone: s.phone, role: s.role, specialty: s.specialty, status: s.status, paymentStatus: s.paymentStatus });
     setFotoFile(null);
-    setFotoPreview(s.fotoUrl); // mostra foto atual como preview
+    setFotoPreview(s.fotoUrl);
     setEditTarget(s);
     setModal("editStaff");
   };
@@ -285,7 +335,7 @@ export function AdminPage() {
     }
   };
 
-  // ── Filtros ───────────────────────────────────────────────────────────
+  //Filtros
   const filteredMembers = members.filter(m => {
     const matchSearch = m.name.toLowerCase().includes(memberSearch.toLowerCase()) || m.email.toLowerCase().includes(memberSearch.toLowerCase());
     const matchFilter = memberFilter === "todos" || m.modality === memberFilter || m.status === memberFilter;
@@ -298,7 +348,7 @@ export function AdminPage() {
     s.role.toLowerCase().includes(staffSearch.toLowerCase())
   );
 
-  // ─────────────────────────────────────────────────────────────────────
+
   return (
     <div className="min-h-screen bg-black text-white flex" style={{ fontFamily: "'Barlow', sans-serif" }}>
       <style>{`
@@ -326,7 +376,7 @@ export function AdminPage() {
         .upload-zone:hover { border-color: #dc2626; background: rgba(220,38,38,0.05); }
       `}</style>
 
-      {/* ── SIDEBAR ─────────────────────────────────────────────────────── */}
+      {/* SIDEBAR*/}
       <aside className="w-64 min-h-screen bg-neutral-950 border-r border-neutral-900 flex flex-col fixed left-0 top-0 bottom-0 z-40">
         <div className="px-6 py-6 border-b border-neutral-900">
           <div className="font-display font-black text-2xl tracking-widest">CT <span className="text-red-600">FOCO</span></div>
@@ -350,7 +400,7 @@ export function AdminPage() {
         </div>
       </aside>
 
-      {/* ── MAIN ────────────────────────────────────────────────────────── */}
+      {/* MAIN*/}
       <main className="ml-64 flex-1 min-h-screen">
         <header className="sticky top-0 z-30 bg-black/90 backdrop-blur border-b border-neutral-900 px-8 py-4 flex items-center justify-between">
           <div>
@@ -380,7 +430,7 @@ export function AdminPage() {
 
         <div className="p-8">
 
-          {/* ══ DASHBOARD ══ */}
+          {/*DASHBOARD*/}
           {view === "dashboard" && (
             <div className="space-y-8">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -459,7 +509,7 @@ export function AdminPage() {
             </div>
           )}
 
-          {/* ══ NEW MEMBER ══ */}
+          {/*NEW MEMBER*/}
           {view === "new_member" && (
             <div className="max-w-2xl mx-auto">
               {registerSuccess && (
@@ -562,7 +612,7 @@ export function AdminPage() {
             </div>
           )}
 
-          {/* ══ MEMBERS ══ */}
+          {/*MEMBERS*/}
           {view === "members" && (
             <div className="space-y-5">
               {loadingMembers ? (
@@ -589,7 +639,7 @@ export function AdminPage() {
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-neutral-800 bg-neutral-950">
-                          {["Nome", "Contato", "Nascimento / Idade", "Altura", "Modalidade", "Horário", "Status", "Ações"].map(h => (
+                          {["Nome", "Contato", "Pagamento", "Nascimento / Idade", "Altura", "Modalidade", "Horário", "Status", "Ações"].map(h => (
                             <th key={h} className="px-4 py-3 text-left text-xs tracking-widest uppercase text-gray-600 font-medium">{h}</th>
                           ))}
                         </tr>
@@ -599,28 +649,42 @@ export function AdminPage() {
                           <tr><td colSpan={8} className="text-center py-12 text-gray-600">Nenhum aluno encontrado.</td></tr>
                         ) : pagedMembers.map(m => (
                           <tr key={m.id} className="row-hover border-b border-neutral-900">
+
                             <td className="px-4 py-3">
                               <div className="font-medium text-white">{m.name}</div>
                               <div className="text-gray-600 text-xs mt-0.5">desde {m.joinedAt}</div>
                             </td>
+
                             <td className="px-4 py-3">
                               <div className="text-gray-300">{m.email}</div>
                               <div className="text-gray-600 text-xs">{m.phone}</div>
                             </td>
+                    
+                            <td className="px-4 py-3 text-gray-300">
+                              {m.paymentStatus === "pago" ? (
+                                <span className="text-green-500">Pago</span>
+                              ) : (
+                                <span className="text-red-500">Pendente</span>
+                              )}
+                            </td>
+
                             <td className="px-4 py-3 text-gray-300">
                               {new Date(m.birthDate).toLocaleDateString("pt-BR")}
                               <span className="ml-1.5 text-xs text-gray-600">({m.age} anos)</span>
                             </td>
+
                             <td className="px-4 py-3 text-gray-300">{m.height} cm</td>
                             <td className="px-4 py-3"><span className="tag text-xs px-2 py-0.5">{m.modality}</span></td>
                             <td className="px-4 py-3 text-gray-300">{m.schedule}</td>
                             <td className="px-4 py-3">
+
                               <span className={`text-xs px-2 py-0.5 font-medium ${m.status === "ativo" ? "badge-ativo" : "badge-inativo"}`}>{m.status}</span>
                             </td>
+
                             <td className="px-4 py-3">
                               <div className="flex items-center gap-2">
-                                <button onClick={() => openEditMember(m)} className="text-gray-500 hover:text-white transition-colors p-1"><IconEdit /></button>
-                                <button onClick={() => { setDeleteTarget(m.id); setModal("deleteMember"); }} className="text-gray-500 hover:text-red-500 transition-colors p-1"><IconTrash /></button>
+                                <button onClick={() => openEditMember(m)} className="text-gray-500 hover:text-white transition-colors p-1 cursor-pointer"><IconEdit /></button>
+                                <button onClick={() => { setDeleteTarget(m.id); setModal("deleteMember"); }} className="text-gray-500 hover:text-red-500 transition-colors p-1 cursor-pointer"><IconTrash /></button>
                               </div>
                             </td>
                           </tr>
@@ -648,7 +712,7 @@ export function AdminPage() {
             </div>
           )}
 
-          {/* ══ STAFF ══ */}
+          {/*STAFF*/}
           {view === "staff" && (
             <div className="space-y-5">
               <div className="flex gap-3 items-center">
@@ -711,13 +775,13 @@ export function AdminPage() {
         </div>
       </main>
 
-      {/* ══ MODALS ══ */}
+      {/*MODAL*/}
       {modal && (
         <div className="modal-bg fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={e => { if (e.target === e.currentTarget) closeModal(); }}>
           <div className="modal-box bg-neutral-950 border border-neutral-800 w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
-            {/* ── Add/Edit Member ── */}
+            {/*Adicionar/Editar Membrro*/}
             {(modal === "addMember" || modal === "editMember") && (
               <>
                 <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-800">
@@ -765,6 +829,12 @@ export function AdminPage() {
                       <option value="inativo" className="bg-black">Inativo</option>
                     </select>
                   </Field>
+                  <Field label="Pagamento">
+                    <select className={selectCls} value={mForm.paymentStatus} onChange={e => setMForm(f => ({ ...f, paymentStatus: e.target.value as "pago" | "pendente" }))}>
+                      <option value="pago" className="bg-black">Pago</option>
+                      <option value="pendente" className="bg-black">Pendente</option>
+                    </select>
+                  </Field>
                 </div>
                 <div className="flex gap-3 px-6 pb-6">
                   <button onClick={closeModal} className="flex-1 border border-neutral-700 text-gray-400 hover:text-white py-2.5 text-sm transition-colors">Cancelar</button>
@@ -776,7 +846,7 @@ export function AdminPage() {
               </>
             )}
 
-            {/* ── Add/Edit Staff ── */}
+            {/*adicionar/editar equipe*/}
             {(modal === "addStaff" || modal === "editStaff") && (
               <>
                 <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-800">
@@ -869,27 +939,27 @@ export function AdminPage() {
               </>
             )}
 
-            {/* ── Delete ── */}
+            {/*Delete*/}
             {(modal === "deleteMember" || modal === "deleteStaff") && (
               <div className="p-6 text-center">
-                <div className="w-14 h-14 bg-red-950/50 border border-red-900 flex items-center justify-center mx-auto mb-4">
+                {/* <div className="w-14 h-14 bg-red-950/50 border border-red-900 flex items-center justify-center mx-auto mb-4">
                   <IconTrash />
-                </div>
+                </div> */}
                 <h2 className="font-display font-bold text-xl mb-2">Confirmar exclusão</h2>
                 <p className="text-gray-400 text-sm mb-6">
                   {modal === "deleteMember"
                     ? "Tem certeza que deseja remover este aluno? Esta ação não pode ser desfeita."
                     : "Tem certeza que deseja remover este membro? A foto também será deletada do servidor."}
                 </p>
-                <div className="flex gap-3">
+                <div className="flex gap-3 cursor-pointer">
                   <button onClick={closeModal}
-                    className="flex-1 border border-neutral-700 text-gray-400 hover:text-white py-2.5 text-sm transition-colors">
+                    className="cursor-pointer flex-1 border border-neutral-700 text-gray-400 hover:text-white py-2.5 text-sm transition-colors">
                     Cancelar
                   </button>
                   <button
                     disabled={deletingStaff}
                     onClick={modal === "deleteMember" ? deleteMember : deleteStaff}
-                    className="flex-1 bg-red-700 hover:bg-red-600 py-2.5 text-sm font-medium transition-colors disabled:opacity-40 flex items-center justify-center gap-2">
+                    className="cursor-pointer flex-1 bg-red-700 hover:bg-red-600 py-2.5 text-sm font-medium transition-colors disabled:opacity-40 flex items-center justify-center gap-2">
                     {deletingStaff ? <><IconSpinner /> Excluindo...</> : "Sim, excluir"}
                   </button>
                 </div>

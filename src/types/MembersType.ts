@@ -10,5 +10,6 @@ interface MembersType {
   schedule: string;
   status: string;
   joinedAt: string;
+  paymentStatus: string;
 };
 export default MembersType;

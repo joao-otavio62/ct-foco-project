@@ -7,6 +7,7 @@ interface TeamMember{
   specialty: string;
   status: string;
   fotoUrl: string;
+  paymentStatus: string;
 }
 
 export default TeamMember;
