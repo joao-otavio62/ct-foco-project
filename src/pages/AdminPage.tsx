@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import type TeamMember from "../types/TeamMembers";
 import type MembersType from "../types/MembersType";
 import api from "../api/axios";
-import axios from "axios";
+
 
 type View = "dashboard" | "members" | "new_member" | "staff";
 type ModalType = "addMember" | "editMember" | "addStaff" | "editStaff" | "deleteMember" | "deleteStaff" | null;
@@ -63,7 +63,7 @@ const mapStaff = (s: any): TeamMember => ({
   paymentStatus: s.paymentStatus === "paid" ? "pago" : "pendente",
 });
 
-//Componente principal 
+ 
 export function AdminPage() {
   const [view, setView] = useState<View>("dashboard");
 
@@ -781,7 +781,7 @@ const deleteMember = async () => {
           onClick={e => { if (e.target === e.currentTarget) closeModal(); }}>
           <div className="modal-box bg-neutral-950 border border-neutral-800 w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
-            {/*Adicionar/Editar Membrro*/}
+            {/*Adicionar/Editar Membro*/}
             {(modal === "addMember" || modal === "editMember") && (
               <>
                 <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-800">

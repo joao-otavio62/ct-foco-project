@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import api from "../api/axios";
 
-// ── Tipo local só para o que a landing precisa ────────────────────────────
 interface StaffCard {
   id: string;
   name: string;
@@ -11,14 +10,14 @@ interface StaffCard {
   bio?: string;
 }
 
-// ── Helper: monta o objeto que a landing usa a partir da resposta da API ──
+
 const mapStaff = (s: any): StaffCard => ({
   id: String(s.id),
   name: s.nome,
   role: s.cargo,
   specialty: s.especialidade,
   fotoUrl: s.fotoUrl ?? "",
-  bio: s.especialidade, // usa especialidade como bio fallback
+  bio: s.especialidade, 
 });
 
 const services = [
@@ -57,16 +56,16 @@ export function MainPage() {
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
-  //  Estado da equipe vindo da API
+  //  Estado da equipe
   const [teamMembers, setTeamMembers] = useState<StaffCard[]>([]);
   const [loadingTeam, setLoadingTeam] = useState(true);
 
-  //Busca a equipe da API ao montar o componente
+  //Busca a equipe da api
   useEffect(() => {
     const fetchTeam = async () => {
       try {
         const { data } = await api.get("/staffmembers");
-        // filtra apenas membros ativos
+        // filtra membros 
         const ativos = data
           .filter((s: any) => s.status === true || s.status === "ativo")
           .map(mapStaff);
@@ -79,7 +78,7 @@ export function MainPage() {
       }
     };
     fetchTeam();
-  }, []); // [] = roda só uma vez quando a página abre
+  }, []); 
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -204,7 +203,7 @@ export function MainPage() {
         </div>
         {videoExpanded && (
           <button
-            className="absolute top-6 right-8 z-50 text-white text-3xl font-light bg-red-600 w-10 h-10 flex items-center justify-center rounded-sm"
+            className="cursor-pointer mt-10 absolute top-6 right-8 z-50 text-white text-3xl font-light bg-red-600 w-10 h-10 flex items-center justify-center rounded-sm"
             onClick={() => setVideoExpanded(false)}
           >×</button>
         )}

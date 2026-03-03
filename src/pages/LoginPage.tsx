@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-// ── Credenciais pré-definidas ─────────────────────────────────────────────
-// Para alterar: mude apenas estes dois valores
+// Credenciais pré-definidas
+
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "ctfoco2025";
 
@@ -39,11 +39,11 @@ export function LoginPage() {
     setLoading(true);
     setError("");
 
-    // simula um pequeno delay para não parecer instantâneo demais
+    
     await new Promise(r => setTimeout(r, 600));
 
     if (user === ADMIN_USER && pass === ADMIN_PASS) {
-      // salva na sessão — some quando o navegador fecha
+      // salva na sessão
       sessionStorage.setItem("ctfoco_auth", "true");
       navigate("/admin", { replace: true });
     } else {
@@ -147,7 +147,7 @@ export function LoginPage() {
         }
       `}</style>
 
-      {/* ── Fundo com linhas animadas ── */}
+      {/*Fundo com linhas*/}
       <div className="scanlines absolute inset-0">
         {[15, 30, 50, 68, 82].map((left, i) => (
           <div
@@ -166,7 +166,7 @@ export function LoginPage() {
         }} />
       </div>
 
-      {/* ── Card de login ── */}
+      {/* ── form de login*/}
       <div
         className={`login-card relative z-10 w-full max-w-sm mx-4 ${shake ? "shake" : ""} ${mounted ? "shown-card" : "hidden-card"}`}
       >
@@ -227,7 +227,7 @@ export function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPass(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-300 transition-colors"
+                  className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-300 transition-colors"
                   tabIndex={-1}
                 >
                   {showPass ? (
@@ -260,7 +260,7 @@ export function LoginPage() {
             <button
               onClick={handleLogin}
               disabled={loading}
-              className="btn-login w-full py-3 text-sm font-medium tracking-widest uppercase text-white flex items-center justify-center gap-2 mt-2"
+              className="cursor-pointer btn-login w-full py-3 text-sm font-medium tracking-widest uppercase text-white flex items-center justify-center gap-2 mt-2"
             >
               {loading ? (
                 <>
