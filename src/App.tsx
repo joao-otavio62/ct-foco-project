@@ -1,20 +1,24 @@
-import React from "react";
-import { Route, Routes } from "react-router";
-import { MainPage } from "./pages/MainPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
+import { Routes, Route } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage";
 import { AdminPage } from "./pages/AdminPage";
+import { MainPage } from "./pages/MainPage";
+import { ProtectedRoute } from "./componentes/ProtectedRoute";
 
-const App = () => {
+export function App() {
   return (
     <Routes>
-      <React.Fragment>
-        
-        <Route element={<MainPage />} path="/" />
-        <Route element={<AdminPage />} path="admin" />
-        <Route element={<NotFoundPage />} path="*" />
-      </React.Fragment>
+      <Route path="/" element={<MainPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminPage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
-};
+}
 
 export default App;
