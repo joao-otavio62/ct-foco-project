@@ -1,0 +1,33 @@
+
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@300;400;500&display=swap');
+        * { font-family: 'Barlow', sans-serif; }
+        .font-display { font-family: 'Barlow Condensed', sans-serif; }
+        .fade-up { opacity: 0; transform: translateY(60px); transition: all 0.8s cubic-bezier(0.22,1,0.36,1); }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .fade-left { opacity: 0; transform: translateX(-60px); transition: all 0.8s cubic-bezier(0.22,1,0.36,1); }
+        .fade-left.visible { opacity: 1; transform: translateX(0); }
+        .fade-right { opacity: 0; transform: translateX(60px); transition: all 0.8s cubic-bezier(0.22,1,0.36,1); }
+        .fade-right.visible { opacity: 1; transform: translateX(0); }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.25s; }
+        .stagger-3 { transition-delay: 0.4s; }
+        .stagger-4 { transition-delay: 0.55s; }
+        .red-glow { box-shadow: 0 0 40px rgba(220,38,38,0.4); }
+        .team-card { transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); }
+        .scroll-line { animation: scrollLine 2s ease-in-out infinite; }
+        @keyframes scrollLine { 0%,100%{transform:scaleY(0);transform-origin:top;} 50%{transform:scaleY(1);transform-origin:top;} 51%{transform-origin:bottom;} }
+        .video-overlay { transition: all 0.6s cubic-bezier(0.22,1,0.36,1); }
+        .play-btn { transition: all 0.3s ease; }
+        .play-btn:hover { transform: scale(1.1); }
+        .service-card { transition: all 0.4s cubic-bezier(0.22,1,0.36,1); }
+        .service-card:hover { transform: translateY(-8px); border-color: rgb(220,38,38); box-shadow: 0 20px 60px rgba(220,38,38,0.2); }
+        .carousel-track { transition: transform 0.6s cubic-bezier(0.22,1,0.36,1); }
+        .nav-link { position: relative; }
+        .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:rgb(220,38,38); transition:width 0.3s ease; }
+        .nav-link:hover::after { width:100%; }
+        .grain { background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); }
+        .input-field { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+        .input-field:focus { outline: none; border-color: rgb(220,38,38); box-shadow: 0 0 0 3px rgba(220,38,38,0.15); }
+        .btn-primary { transition: all 0.3s ease; }
+        .btn-primary:hover { box-shadow: 0 10px 40px rgba(220,38,38,0.5); transform: translateY(-2px); }
+     

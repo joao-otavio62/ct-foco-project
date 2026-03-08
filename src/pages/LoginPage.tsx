@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Credenciais pré-definidas
+// Credenciais pre-definidas
 
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "ctfoco2025";
@@ -22,7 +22,7 @@ export function LoginPage() {
     setTimeout(() => setMounted(true), 50);
     userRef.current?.focus();
 
-    // se já estiver logado, vai direto para o admin
+    //vai direto para o admin se tiver logado 
     if (sessionStorage.getItem("ctfoco_auth") === "true") {
       navigate("/admin", { replace: true });
     }
@@ -166,7 +166,7 @@ export function LoginPage() {
         }} />
       </div>
 
-      {/* ── form de login*/}
+      {/*form de login*/}
       <div
         className={`login-card relative z-10 w-full max-w-sm mx-4 ${shake ? "shake" : ""} ${mounted ? "shown-card" : "hidden-card"}`}
       >
