@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef,  useCallback } from "react";
 import type StaffCard from "../../types/StaffCard";
 
 const CARD_WIDTH = 300;
