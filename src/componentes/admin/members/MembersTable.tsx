@@ -29,7 +29,7 @@ export function MembersTable({ members, page, totalPages, onEdit, onDelete, onPa
               <tr key={m.id} className="row-hover border-b border-neutral-900">
                 <td className="px-4 py-3">
                   <div className="font-medium text-white">{m.name}</div>
-                  <div className="text-gray-600 text-xs mt-0.5">desde {m.joinedAt}</div>
+                  {/* <div className="text-gray-600 text-xs mt-0.5">desde {m.joinedAt}</div> */}
                 </td>
                 <td className="px-4 py-3">
                   <div className="text-gray-300">{m.email}</div>
@@ -39,6 +39,7 @@ export function MembersTable({ members, page, totalPages, onEdit, onDelete, onPa
                   {m.paymentStatus === "pago"
                     ? <span className="text-green-500">Pago</span>
                     : <span className="text-red-500">Pendente</span>}
+                  <div className="text-gray-600 text-xs mt-0.5">Vencimento {new Date(m.paymentDate).toLocaleDateString("pt-BR")}</div>
                 </td>
                 <td className="px-4 py-3 text-gray-300">
                   {new Date(m.birthDate).toLocaleDateString("pt-BR")}

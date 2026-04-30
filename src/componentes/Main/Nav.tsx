@@ -32,13 +32,20 @@ export function Nav({ scrollY }: NavProps) {
           </a>
         ))}
       </div>
-
+        <div className="hidden md:flex gap-8 text-sm font-medium tracking-widest uppercase">
       <a
         href="#contato"
         className="btn-primary bg-red-600 text-white px-5 py-2 text-sm font-medium tracking-widest uppercase"
       >
         Agendar
       </a>
+      <a
+        href="/Login"
+        className="btn-primary bg-red-600 text-white px-5 py-2 text-sm font-medium tracking-widest uppercase"
+      >
+        Login
+      </a>
+      </div>
     </nav>
   );
 }

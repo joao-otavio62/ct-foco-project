@@ -3,43 +3,31 @@ import type { View, ModalType } from "../types/AdminTypes";
 import type MembersType from "../types/MembersType";
 import type TeamMember from "../types/TeamMembers";
 
-// layout
-import { Sidebar }  from "../componentes/admin/layout/Sidebar";
-import { Header }   from "../componentes/admin/layout/Header";
+import { Sidebar }       from "../componentes/admin/layout/Sidebar";
+import { Header }        from "../componentes/admin/layout/Header";
+import { DashboardView } from "../componentes/admin/dashboard/DashboardView";
+import { MembersView }   from "../componentes/admin/members/MembersView";
+import { NewMemberView } from "../componentes/admin/members/NewMemberView";
+import { StaffView }     from "../componentes/admin/staff/StaffVIew";
+import { MemberModal }   from "../componentes/admin/modals/MemberModal";
+import { StaffModal }    from "../componentes/admin/modals/StaffModal";
+import { DeleteModal }   from "../componentes/admin/modals/DeleteModal";
 
-// view
-import { DashboardView }  from "../componentes/admin/dashboard/DashboardView";
-import { MembersView }    from "../componentes/admin/members/MembersView";
-import { NewMemberView }  from "../componentes/admin/members/NewMemberView";
-import { StaffView }      from "../componentes/admin/staff/StaffVIew";
-
-// ModalS
-import { MemberModal } from "../componentes/admin/modals/MemberModal";
-import {StaffModal} from "../componentes/admin/modals/StaffModal";
-import { DeleteModal } from "../componentes/admin/modals/DeleteModal";
-
-// HOOKS
-import { useMembers } from "../hooks/UseMembers";
-import { useStaff }   from "../hooks/UseStaff";
+import { useMembers, blankMemberForm, type MemberForm } from "../hooks/UseMembers";
+import { useStaff }  from "../hooks/UseStaff";
 
 import "../assets/AdminPage.css";
 
-const blankMemberForm = {
-  name: "", email: "", phone: "", birthDate: "",
-  height: 170, modality: "Funcional", schedule: "07:00",
-  status: "ativo" as "ativo" | "inativo", paymentStatus: "pendente" as "pendente" | "pago",
-};
-
 export function AdminPage() {
-  const [view, setView]           = useState<View>("dashboard");
-  const [modal, setModal]         = useState<ModalType>(null);
-  const [editTarget, setEditTarget] = useState<MembersType | TeamMember | null>(null);
+  const [view, setView]               = useState<View>("dashboard");
+  const [modal, setModal]             = useState<ModalType>(null);
+  const [editTarget, setEditTarget]   = useState<MembersType | TeamMember | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
-  const [mForm, setMForm]         = useState(blankMemberForm);
+  const [mForm, setMForm]             = useState<MemberForm>(blankMemberForm);
 
   const {
     members, setMembers, loading: loadingMembers,
-    saveMember, deleteMember, openEditForm: openEditMemberForm,
+    saveMember, deleteMember,
   } = useMembers();
 
   const {
@@ -56,7 +44,7 @@ export function AdminPage() {
     resetFoto();
   };
 
-  //Member handlers
+  // Member handlers
   const handleOpenAddMember = () => {
     setMForm(blankMemberForm);
     setEditTarget(null);
@@ -64,26 +52,34 @@ export function AdminPage() {
   };
 
   const handleOpenEditMember = (m: MembersType) => {
-    openEditMemberForm(m);
-    setMForm({ name: m.name, email: m.email, phone: m.phone, birthDate: m.birthDate, height: m.height, modality: m.modality, schedule: m.schedule, status: m.status, paymentStatus: m.paymentStatus ?? "pendente" });
+    setMForm({
+      name:           m.name,
+      email:          m.email,
+      phone:          m.phone,
+      birthDate:      m.birthDate,
+      height:         m.height,
+      modality:       m.modality,
+      schedule:       m.schedule,
+      status:         m.status as "ativo" | "inativo",
+      paymentStatus:  m.paymentStatus as "pago" | "pendente",
+      dataVencimento: m.paymentDate ?? "",
+    });
     setEditTarget(m);
     setModal("editMember");
   };
 
   const handleSaveMember = async () => {
-    await saveMember(
-      modal as "addMember" | "editMember",
-      (editTarget as MembersType)?.id,
-    );
+    await saveMember(mForm, modal as "addMember" | "editMember", (editTarget as MembersType)?.id);
     closeModal();
   };
 
   const handleDeleteMember = async () => {
     if (deleteTarget) await deleteMember(deleteTarget);
-    closeModal();
+    setModal(null);
+    setDeleteTarget(null);
   };
 
-  // staff handlers
+  // Staff handlers
   const handleOpenAddStaff = () => {
     openAddStaffForm();
     setEditTarget(null);
@@ -97,23 +93,20 @@ export function AdminPage() {
   };
 
   const handleSaveStaff = async () => {
-    await saveStaff(
-      modal as "addStaff" | "editStaff",
-      (editTarget as TeamMember)?.id,
-    );
+    await saveStaff(modal as "addStaff" | "editStaff", (editTarget as TeamMember)?.id);
     closeModal();
   };
 
   const handleDeleteStaff = async () => {
     if (deleteTarget) await deleteStaff(deleteTarget);
-    closeModal();
+    setModal(null);
+    setDeleteTarget(null);
   };
 
-  // render
   return (
     <div className="min-h-screen bg-black text-white flex" style={{ fontFamily: "'Barlow', sans-serif" }}>
 
-      <Sidebar view={view} onNavigate={(v) => setView(v)} />
+      <Sidebar view={view} onNavigate={setView} />
 
       <main className="ml-64 flex-1 min-h-screen">
         <Header
@@ -131,11 +124,9 @@ export function AdminPage() {
               loadingStaff={loadingStaff}
             />
           )}
-
           {view === "new_member" && (
             <NewMemberView onCreated={(m) => setMembers(prev => [m, ...prev])} />
           )}
-
           {view === "members" && (
             <MembersView
               members={members}
@@ -144,7 +135,6 @@ export function AdminPage() {
               onDelete={(id) => { setDeleteTarget(id); setModal("deleteMember"); }}
             />
           )}
-
           {view === "staff" && (
             <StaffView
               staff={staff}
@@ -156,7 +146,6 @@ export function AdminPage() {
         </div>
       </main>
 
-      {/*Modais*/}
       {modal && (
         <div
           className="modal-bg fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"

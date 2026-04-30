@@ -11,5 +11,6 @@ interface MembersType {
   status: string;
   joinedAt: string;
   paymentStatus: string;
+  paymentDate: string;
 };
 export default MembersType;

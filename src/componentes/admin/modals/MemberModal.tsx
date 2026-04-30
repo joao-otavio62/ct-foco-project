@@ -13,6 +13,7 @@ type MemberForm = {
   name: string; email: string; phone: string; birthDate: string;
   height: number; modality: string; schedule: string;
   status: "ativo" | "inativo"; paymentStatus: "pago" | "pendente";
+  dataVencimento: string; // 👈 campo novo
 };
 
 interface MemberModalProps {
@@ -31,11 +32,13 @@ export function MemberModal({ mode, form, onChange, onSave, onClose }: MemberMod
       <div className="flex items-center justify-between px-6 py-5 border-b border-neutral-800">
         <div>
           <div className="w-6 h-0.5 bg-red-600 mb-2" />
-          <h2 className="font-display font-bold text-xl">{mode === "addMember" ? "Cadastrar Novo Aluno" : "Editar Aluno"}</h2>
+          <h2 className="font-display font-bold text-xl">
+            {mode === "addMember" ? "Cadastrar Novo Aluno" : "Editar Aluno"}
+          </h2>
         </div>
         <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors"><IconX /></button>
       </div>
-
+      {/* Campo de formulário para nome, email, telefone, data de nascimento */}
       <div className="p-6 space-y-4">
         <Field label="Nome completo">
           <input className={inputCls} value={form.name} onChange={e => set({ name: e.target.value })} placeholder="Ex: João da Silva" />
@@ -48,6 +51,7 @@ export function MemberModal({ mode, form, onChange, onSave, onClose }: MemberMod
             <input className={inputCls} value={form.phone} onChange={e => set({ phone: e.target.value })} placeholder="(11) 99999-9999" />
           </Field>
         </div>
+        {/* Campo de data de nascimento e altura */}
         <div className="grid grid-cols-2 gap-4">
           <Field label="Data de Nascimento">
             <input className={inputCls} type="date" value={form.birthDate} onChange={e => set({ birthDate: e.target.value })} />
@@ -56,6 +60,7 @@ export function MemberModal({ mode, form, onChange, onSave, onClose }: MemberMod
             <input className={inputCls} type="number" min={100} max={250} value={form.height} onChange={e => set({ height: Number(e.target.value) })} />
           </Field>
         </div>
+        {/*  Campo de modalidade e horário */}
         <div className="grid grid-cols-2 gap-4">
           <Field label="Modalidade">
             <select className={selectCls} value={form.modality} onChange={e => set({ modality: e.target.value })}>
@@ -68,18 +73,32 @@ export function MemberModal({ mode, form, onChange, onSave, onClose }: MemberMod
             </select>
           </Field>
         </div>
-        <Field label="Status">
-          <select className={selectCls} value={form.status} onChange={e => set({ status: e.target.value as "ativo" | "inativo" })}>
-            <option value="ativo" className="bg-black">Ativo</option>
-            <option value="inativo" className="bg-black">Inativo</option>
-          </select>
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="Status">
+            <select className={selectCls} value={form.status} onChange={e => set({ status: e.target.value as "ativo" | "inativo" })}>
+              <option value="ativo" className="bg-black">Ativo</option>
+              <option value="inativo" className="bg-black">Inativo</option>
+            </select>
+          </Field>
+          {/*  Campo de pagamento */}
+          <Field label="Pagamento">
+            <select className={selectCls} value={form.paymentStatus} onChange={e => set({ paymentStatus: e.target.value as "pago" | "pendente" })}>
+              <option value="pago" className="bg-black">Pago</option>
+              <option value="pendente" className="bg-black">Pendente</option>
+            </select>
+          </Field>
+        </div>
+
+        {/*  Campo  de vencimento */}
+        <Field label="Vencimento da Mensalidade">
+          <input
+            className={inputCls}
+            type="date"
+            value={form.dataVencimento}
+            onChange={e => set({ dataVencimento: e.target.value })}
+          />
         </Field>
-        <Field label="Pagamento">
-          <select className={selectCls} value={form.paymentStatus} onChange={e => set({ paymentStatus: e.target.value as "pago" | "pendente" })}>
-            <option value="pago" className="bg-black">Pago</option>
-            <option value="pendente" className="bg-black">Pendente</option>
-          </select>
-        </Field>
+
       </div>
 
       <div className="flex gap-3 px-6 pb-6">
