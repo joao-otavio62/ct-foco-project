@@ -32,11 +32,11 @@ export function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5084/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: user, password: pass }),
-      });
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ username: user, password: pass }),
+});
 
       if (!response.ok) {
         setError("Usuário ou senha incorretos.");
