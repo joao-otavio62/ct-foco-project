@@ -13,14 +13,14 @@ export type MemberForm = {
   schedule: string;
   status: "ativo" | "inativo";
   paymentStatus: "pago" | "pendente";
-  dataVencimento: string;
+  dataVencimento: Date;
 };
 
 export const blankMemberForm: MemberForm = {
   name: "", email: "", phone: "", birthDate: "",
   height: 170, modality: "Funcional", schedule: "07:00",
   status: "ativo", paymentStatus: "pendente",
-  dataVencimento: "",
+  dataVencimento: new Date(),
 };
 
 export function useMembers() {
