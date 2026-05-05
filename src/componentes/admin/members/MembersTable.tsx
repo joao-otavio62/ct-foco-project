@@ -1,4 +1,4 @@
-import type {MembersType} from "../../../types/MembersType";
+import type { MembersType } from "../../../types/MembersType";
 import { IconEdit, IconTrash, IconChevron } from "../../../icons/AdminIcons";
 
 interface MembersTableProps {
@@ -39,7 +39,7 @@ export function MembersTable({ members, page, totalPages, onEdit, onDelete, onPa
                   {m.paymentStatus === "pago"
                     ? <span className="text-green-500">Pago</span>
                     : <span className="text-red-500">Pendente</span>}
-                  <div className="text-gray-600 text-xs mt-0.5">Vencimento {new Date(m.paymentDate).toLocaleDateString("pt-BR")}</div>
+                  <div className="text-gray-600 text-xs mt-0.5">Vencimento {m.paymentDate ? new Date(m.paymentDate).toLocaleDateString("pt-BR") : "—"}</div>
                 </td>
                 <td className="px-4 py-3 text-gray-300">
                   {new Date(m.birthDate).toLocaleDateString("pt-BR")}

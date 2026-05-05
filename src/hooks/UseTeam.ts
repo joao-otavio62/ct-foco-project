@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api/axios";
-import type StaffCard from "../types/StaffCard";
+import type {StaffCard} from "../types/StaffCard";
 
 const mapStaff = (s: any): StaffCard => ({
   id: String(s.id),

@@ -1,4 +1,4 @@
-import type TeamMember from "../../../types/TeamMembers";
+import type {TeamMember} from "../../../types/TeamMembers";
 import { IconEdit, IconTrash } from "../../../icons/AdminIcons";
 
 interface StaffCardProps {

@@ -1,5 +1,5 @@
 import { useState, useRef,  useCallback } from "react";
-import type StaffCard from "../../types/StaffCard";
+import type {StaffCard} from "../../types/StaffCard";
 
 const CARD_WIDTH = 300;
 const CARD_GAP   = 16;

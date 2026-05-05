@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type TeamMember from "../../../types/TeamMembers";
+import type { TeamMember } from "../../../types/TeamMembers";
 import { StaffCard } from "./StaffCard";
 import { IconSearch, IconSpinner } from "../../../icons/AdminIcons";
 import { inputCls } from "../../../constants/AdminConstants";
