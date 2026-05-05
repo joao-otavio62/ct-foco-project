@@ -93,8 +93,8 @@ export function MemberModal({ mode, form, onChange, onSave, onClose }: MemberMod
           <input
             className={inputCls}
             type="date"
-            value={form.dataVencimento}
-            onChange={e => set({ dataVencimento: e.target.value })}
+            value={form.dataVencimento.toISOString().split('T')[0]}
+            onChange={e => set({ dataVencimento: new Date(e.target.value) })}
           />
         </Field>
 
