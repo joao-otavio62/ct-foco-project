@@ -44,7 +44,7 @@ export function AdminPage() {
     resetFoto();
   };
 
-  // ✅ Member handlers
+  
   const handleOpenAddMember = () => {
     setMForm(blankMemberForm);
     setEditTarget(null);
@@ -52,24 +52,27 @@ export function AdminPage() {
   };
 
   const handleOpenEditMember = (m: MembersType) => {
-    setMForm({
-      name: m.name,
-      email: m.email,
-      phone: m.phone,
-      birthDate: m.birthDate,
-      height: m.height,
-      modality: m.modality,
-      schedule: m.schedule,
-      status: m.status as "ativo" | "inativo",
-      paymentStatus: m.paymentStatus as "pago" | "pendente",
+  setMForm({
+    name: m.name,
+    email: m.email,
+    phone: m.phone,
+    birthDate: m.birthDate,
+    height: m.height,
+    modality: m.modality,
+    schedule: m.schedule,
+    status: m.status as "ativo" | "inativo",
+    paymentStatus: m.paymentStatus as "pago" | "pendente",
 
-      // ✅ SEM Date — sempre string yyyy-MM-dd
-      dataVencimento: m.paymentDate ?? "",
-    });
+    
+    dataVencimento:
+      typeof m.paymentDate === "string"
+        ? m.paymentDate
+        : "",
+  });
 
-    setEditTarget(m);
-    setModal("editMember");
-  };
+  setEditTarget(m);
+  setModal("editMember");
+};
 
   const handleSaveMember = async () => {
     await saveMember(
