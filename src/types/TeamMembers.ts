@@ -1,4 +1,4 @@
-interface TeamMember {
+export type TeamMember = {
   id: string;
   name: string;
   role: string;
@@ -8,7 +8,4 @@ interface TeamMember {
   status: string;
   fotoUrl: string;
   paymentStatus: string;
-}
-
-export type { TeamMember };
-export default TeamMember;
+};

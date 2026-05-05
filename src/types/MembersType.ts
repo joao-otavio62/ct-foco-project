@@ -1,4 +1,4 @@
-interface MembersType {
+export type MembersType = {
   id: string;
   name: string;
   email: string;
@@ -12,7 +12,4 @@ interface MembersType {
   joinedAt: string;
   paymentStatus: string;
   paymentDate: string | null;
-}
-
-export type { MembersType };
-export default MembersType;
+};
