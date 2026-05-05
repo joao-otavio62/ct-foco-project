@@ -62,7 +62,7 @@ export function AdminPage() {
       schedule:       m.schedule,
       status:         m.status as "ativo" | "inativo",
       paymentStatus:  m.paymentStatus as "pago" | "pendente",
-      dataVencimento: m.paymentDate ?? new Date(),
+      dataVencimento: m.paymentDate ?? new Date().toISOString(),
     });
     setEditTarget(m);
     setModal("editMember");
