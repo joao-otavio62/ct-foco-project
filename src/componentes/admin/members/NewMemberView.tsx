@@ -52,6 +52,7 @@ export function NewMemberView({ onCreated }: NewMemberViewProps) {
         height: data.altura, modality: data.modalidade,
         schedule: String(data.horario).padStart(2, "0") + ":00",
         status: "ativo", joinedAt: data.dataEntrada, paymentStatus: "pendente",
+        paymentDate: null,
       });
       setSuccess(true);
       setTimeout(() => { setSuccess(false); setForm(blank); setErrors({}); }, 2500);

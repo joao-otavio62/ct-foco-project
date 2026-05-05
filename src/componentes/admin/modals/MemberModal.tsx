@@ -1,5 +1,4 @@
-import type MembersType from "../../../types/MembersType";
-import { MODALITIES, SCHEDULES, inputCls, selectCls } from "../../../constants/adminConstants";
+import { MODALITIES, SCHEDULES, inputCls, selectCls } from "../../../constants/AdminConstants";
 import { IconX } from "../../../icons/AdminIcons";
 
 const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (

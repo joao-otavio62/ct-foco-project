@@ -1,4 +1,4 @@
-interface TeamMember{
+interface TeamMember {
   id: string;
   name: string;
   role: string;
@@ -10,4 +10,5 @@ interface TeamMember{
   paymentStatus: string;
 }
 
+export type { TeamMember };
 export default TeamMember;

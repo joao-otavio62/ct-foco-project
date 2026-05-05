@@ -6,4 +6,6 @@ interface StaffCard {
   fotoUrl: string;
   bio?: string;
 }
+
+export type { StaffCard };
 export default StaffCard;

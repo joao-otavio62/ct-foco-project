@@ -5,12 +5,14 @@ interface MembersType {
   phone: string;
   birthDate: string;
   age: number;
-  height: number; // cm
+  height: number;
   modality: string;
   schedule: string;
   status: string;
   joinedAt: string;
   paymentStatus: string;
-  paymentDate: string;
-};
+  paymentDate: string | null;
+}
+
+export type { MembersType };
 export default MembersType;

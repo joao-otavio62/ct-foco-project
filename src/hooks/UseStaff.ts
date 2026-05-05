@@ -7,7 +7,7 @@ const blankStaff = {
   name: "", email: "", phone: "",
   role: "Instrutor(a) de Funcional",
   specialty: "Funcional",
-  status: "ativo" as const,
+  status: "ativo",
 };
 
 export function useStaff() {
