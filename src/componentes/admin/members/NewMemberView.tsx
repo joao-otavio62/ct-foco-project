@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type MembersType from "../../../types/MembersType";
+import type {MembersType} from "../../../types/MembersType";
 import { calcAge } from "../../../Utils/Helpers";
 import { MODALITIES, SCHEDULES, inputCls, selectCls } from "../../../constants/AdminConstants";
 import { IconPlus } from "../../../icons/AdminIcons";

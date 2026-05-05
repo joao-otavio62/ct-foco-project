@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import type TeamMember from "../types/TeamMembers";
+import type {TeamMember} from "../types/TeamMembers";
 import api from "../api/axios";
 import { mapStaff } from "../Utils/Helpers";
 

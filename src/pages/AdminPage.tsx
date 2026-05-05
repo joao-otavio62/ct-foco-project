@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { View, ModalType } from "../types/AdminTypes";
-import type MembersType from "../types/MembersType";
-import type TeamMember from "../types/TeamMembers";
+import type {MembersType} from "../types/MembersType";
+import type {TeamMember} from "../types/TeamMembers";
 
 import { Sidebar }       from "../componentes/admin/layout/Sidebar";
 import { Header }        from "../componentes/admin/layout/Header";
@@ -166,7 +166,7 @@ export function AdminPage() {
             {(modal === "addStaff" || modal === "editStaff") && (
               <StaffModal
                 mode={modal}
-                form={sForm}
+                form={{ ...sForm, status: sForm.status as "ativo" | "inativo" }}
                 onChange={(form) => setSForm(form as typeof sForm)}
                 fotoFile={fotoFile}
                 fotoPreview={fotoPreview}
