@@ -1,4 +1,4 @@
-import type MembersType from "../../../types/MembersType";
+import type {MembersType} from "../../../types/MembersType";
 import { MODALITIES } from "../../../constants/AdminConstants";
 
 interface ModalityChartProps {

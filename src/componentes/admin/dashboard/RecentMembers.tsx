@@ -1,4 +1,4 @@
-import type MembersType from "../../../types/MembersType";
+import type {MembersType} from "../../../types/MembersType";
 import { IconSpinner } from "../../../icons/AdminIcons";
 
 interface RecentMembersProps {

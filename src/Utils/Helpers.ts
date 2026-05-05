@@ -1,4 +1,4 @@
-import type TeamMember from "../types/TeamMembers";
+import type {TeamMember} from "../types/TeamMembers";
 
 export const genId = () => Math.random().toString(36).slice(2, 9);
 

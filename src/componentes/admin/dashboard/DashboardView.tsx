@@ -1,5 +1,5 @@
-import type MembersType from "../../../types/MembersType";
-import type TeamMember from "../../../types/TeamMembers";
+import type {MembersType} from "../../../types/MembersType";
+import type {TeamMember} from "../../../types/TeamMembers";
 import { StatCard } from "./StatCard";
 import { ModalityChart } from "./Modalities";
 import { RecentMembers } from "./RecentMembers";

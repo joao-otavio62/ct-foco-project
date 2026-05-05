@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type MembersType from "../../../types/MembersType";
+import type {MembersType} from "../../../types/MembersType";
 import { MembersTable } from "./MembersTable";
 import { IconSearch, IconSpinner } from "../../../icons/AdminIcons";
 import { MODALITIES, inputCls, selectCls } from "../../../constants/AdminConstants";

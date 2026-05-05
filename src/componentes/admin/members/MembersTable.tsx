@@ -1,4 +1,4 @@
-import type MembersType from "../../../types/MembersType";
+import type {MembersType} from "../../../types/MembersType";
 import { IconEdit, IconTrash, IconChevron } from "../../../icons/AdminIcons";
 
 interface MembersTableProps {

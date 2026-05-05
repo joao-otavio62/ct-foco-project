@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type MembersType from "../types/MembersType";
+import type {MembersType} from "../types/MembersType";
 import api from "../api/axios";
 import { calcAge } from "../Utils/Helpers";
 
