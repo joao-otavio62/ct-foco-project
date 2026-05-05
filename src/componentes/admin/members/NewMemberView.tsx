@@ -41,11 +41,15 @@ export function NewMemberView({ onCreated }: NewMemberViewProps) {
     if (!validate()) return;
     try {
       const { data } = await api.post("/members", {
-        nome: form.name, email: form.email, telefone: form.phone,
-        dataNascimento: form.birthDate, altura: form.height,
-        modalidade: form.modality, horario: parseInt(form.schedule.split(":")[0], 10),
-        dataEntrada: new Date().toISOString().slice(0, 10),
-      });
+  nome: form.name,
+  email: form.email,
+  telefone: form.phone,
+  dataNascimento: form.birthDate,
+  altura: form.height,
+  modalidade: form.modality,
+  horario: form.schedule,
+  dataEntrada: new Date().toISOString().slice(0, 10),
+});
       onCreated({
         id: data.id, name: data.nome, email: data.email, phone: data.telefone,
         birthDate: data.dataNascimento, age: calcAge(data.dataNascimento),
