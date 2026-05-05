@@ -12,7 +12,7 @@ type MemberForm = {
   name: string; email: string; phone: string; birthDate: string;
   height: number; modality: string; schedule: string;
   status: "ativo" | "inativo"; paymentStatus: "pago" | "pendente";
-  dataVencimento: string; // 👈 campo novo
+  dataVencimento: Date;
 };
 
 interface MemberModalProps {

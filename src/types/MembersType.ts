@@ -11,5 +11,5 @@ export type MembersType = {
   status: string;
   joinedAt: string;
   paymentStatus: string;
-  paymentDate: string | null;
+  paymentDate: Date | null;
 };
