@@ -1,29 +1,29 @@
 import { useState } from "react";
 import type { View, ModalType } from "../types/AdminTypes";
-import type {MembersType} from "../types/MembersType";
-import type {TeamMember} from "../types/TeamMembers";
+import type { MembersType } from "../types/MembersType";
+import type { TeamMember } from "../types/TeamMembers";
 
-import { Sidebar }       from "../componentes/admin/layout/Sidebar";
-import { Header }        from "../componentes/admin/layout/Header";
+import { Sidebar } from "../componentes/admin/layout/Sidebar";
+import { Header } from "../componentes/admin/layout/Header";
 import { DashboardView } from "../componentes/admin/dashboard/DashboardView";
-import { MembersView }   from "../componentes/admin/members/MembersView";
+import { MembersView } from "../componentes/admin/members/MembersView";
 import { NewMemberView } from "../componentes/admin/members/NewMemberView";
-import { StaffView }     from "../componentes/admin/staff/StaffVIew";
-import { MemberModal }   from "../componentes/admin/modals/MemberModal";
-import { StaffModal }    from "../componentes/admin/modals/StaffModal";
-import { DeleteModal }   from "../componentes/admin/modals/DeleteModal";
+import { StaffView } from "../componentes/admin/staff/StaffVIew";
+import { MemberModal } from "../componentes/admin/modals/MemberModal";
+import { StaffModal } from "../componentes/admin/modals/StaffModal";
+import { DeleteModal } from "../componentes/admin/modals/DeleteModal";
 
 import { useMembers, blankMemberForm, type MemberForm } from "../hooks/UseMembers";
-import { useStaff }  from "../hooks/UseStaff";
+import { useStaff } from "../hooks/UseStaff";
 
 import "../assets/AdminPage.css";
 
 export function AdminPage() {
-  const [view, setView]               = useState<View>("dashboard");
-  const [modal, setModal]             = useState<ModalType>(null);
-  const [editTarget, setEditTarget]   = useState<MembersType | TeamMember | null>(null);
+  const [view, setView] = useState<View>("dashboard");
+  const [modal, setModal] = useState<ModalType>(null);
+  const [editTarget, setEditTarget] = useState<MembersType | TeamMember | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
-  const [mForm, setMForm]             = useState<MemberForm>(blankMemberForm);
+  const [mForm, setMForm] = useState<MemberForm>(blankMemberForm);
 
   const {
     members, setMembers, loading: loadingMembers,
@@ -44,7 +44,7 @@ export function AdminPage() {
     resetFoto();
   };
 
-  // Member handlers
+  // ✅ Member handlers
   const handleOpenAddMember = () => {
     setMForm(blankMemberForm);
     setEditTarget(null);
@@ -53,23 +53,30 @@ export function AdminPage() {
 
   const handleOpenEditMember = (m: MembersType) => {
     setMForm({
-      name:           m.name,
-      email:          m.email,
-      phone:          m.phone,
-      birthDate:      m.birthDate,
-      height:         m.height,
-      modality:       m.modality,
-      schedule:       m.schedule,
-      status:         m.status as "ativo" | "inativo",
-      paymentStatus:  m.paymentStatus as "pago" | "pendente",
-      dataVencimento: m.paymentDate ?? new Date().toISOString(),
+      name: m.name,
+      email: m.email,
+      phone: m.phone,
+      birthDate: m.birthDate,
+      height: m.height,
+      modality: m.modality,
+      schedule: m.schedule,
+      status: m.status as "ativo" | "inativo",
+      paymentStatus: m.paymentStatus as "pago" | "pendente",
+
+      // ✅ SEM Date — sempre string yyyy-MM-dd
+      dataVencimento: m.paymentDate ?? "",
     });
+
     setEditTarget(m);
     setModal("editMember");
   };
 
   const handleSaveMember = async () => {
-    await saveMember(mForm, modal as "addMember" | "editMember", (editTarget as MembersType)?.id);
+    await saveMember(
+      mForm,
+      modal as "addMember" | "editMember",
+      (editTarget as MembersType)?.id
+    );
     closeModal();
   };
 
@@ -93,7 +100,10 @@ export function AdminPage() {
   };
 
   const handleSaveStaff = async () => {
-    await saveStaff(modal as "addStaff" | "editStaff", (editTarget as TeamMember)?.id);
+    await saveStaff(
+      modal as "addStaff" | "editStaff",
+      (editTarget as TeamMember)?.id
+    );
     closeModal();
   };
 
@@ -115,7 +125,7 @@ export function AdminPage() {
           onAddStaff={handleOpenAddStaff}
         />
 
-        <div className="">
+        <div>
           {view === "dashboard" && (
             <DashboardView
               members={members}
@@ -124,23 +134,32 @@ export function AdminPage() {
               loadingStaff={loadingStaff}
             />
           )}
+
           {view === "new_member" && (
             <NewMemberView onCreated={(m) => setMembers(prev => [m, ...prev])} />
           )}
+
           {view === "members" && (
             <MembersView
               members={members}
               loading={loadingMembers}
               onEdit={handleOpenEditMember}
-              onDelete={(id) => { setDeleteTarget(id); setModal("deleteMember"); }}
+              onDelete={(id) => {
+                setDeleteTarget(id);
+                setModal("deleteMember");
+              }}
             />
           )}
+
           {view === "staff" && (
             <StaffView
               staff={staff}
               loading={loadingStaff}
               onEdit={handleOpenEditStaff}
-              onDelete={(id) => { setDeleteTarget(id); setModal("deleteStaff"); }}
+              onDelete={(id) => {
+                setDeleteTarget(id);
+                setModal("deleteStaff");
+              }}
             />
           )}
         </div>
@@ -149,7 +168,9 @@ export function AdminPage() {
       {modal && (
         <div
           className="modal-bg fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={e => { if (e.target === e.currentTarget) closeModal(); }}
+          onClick={e => {
+            if (e.target === e.currentTarget) closeModal();
+          }}
         >
           <div className="modal-box bg-neutral-950 border border-neutral-800 w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
@@ -157,7 +178,7 @@ export function AdminPage() {
               <MemberModal
                 mode={modal}
                 form={mForm}
-                onChange={setMForm}
+                onChange={(form) => setMForm(form)} // ✅ evita erro TS
                 onSave={handleSaveMember}
                 onClose={closeModal}
               />
@@ -172,7 +193,11 @@ export function AdminPage() {
                 fotoPreview={fotoPreview}
                 fileInputRef={fileInputRef as React.RefObject<HTMLInputElement>}
                 onFotoChange={handleFotoChange}
-                onFotoRemove={() => resetFoto(modal === "editStaff" ? (editTarget as TeamMember)?.fotoUrl : "")}
+                onFotoRemove={() =>
+                  resetFoto(modal === "editStaff"
+                    ? (editTarget as TeamMember)?.fotoUrl
+                    : "")
+                }
                 saving={savingStaff}
                 onSave={handleSaveStaff}
                 onClose={closeModal}
@@ -183,7 +208,11 @@ export function AdminPage() {
               <DeleteModal
                 type={modal}
                 deleting={deletingStaff}
-                onConfirm={modal === "deleteMember" ? handleDeleteMember : handleDeleteStaff}
+                onConfirm={
+                  modal === "deleteMember"
+                    ? handleDeleteMember
+                    : handleDeleteStaff
+                }
                 onClose={closeModal}
               />
             )}
