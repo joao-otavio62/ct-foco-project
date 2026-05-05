@@ -1,5 +1,32 @@
-# Logs
-logs
+# ==========================================
+# DEPENDÊNCIAS
+# ==========================================
+node_modules/
+
+# ==========================================
+# BUILD
+# ==========================================
+dist/
+dist-ssr/
+out/
+build/
+
+# ==========================================
+# VARIÁVEIS DE AMBIENTE — NUNCA COMMITAR
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Manter o exemplo sem dados reais
+!.env.example
+
+# ==========================================
+# LOGS
+# ==========================================
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,18 +34,49 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# ==========================================
+# CACHE
+# ==========================================
+.cache/
+.vite/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
 
-# Editor directories and files
+# ==========================================
+# EDITORES
+# ==========================================
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# ==========================================
+# SISTEMA OPERACIONAL
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==========================================
+# TESTES
+# ==========================================
+coverage/
+.nyc_output/
+
+# ==========================================
+# MISC
+# ==========================================
+*.local
+*.pem
+*.key
