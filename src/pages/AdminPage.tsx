@@ -121,7 +121,7 @@ export function AdminPage() {
 
       <Sidebar view={view} onNavigate={setView} />
 
-      <main className="ml-64 flex-1 min-h-screen">
+      <main className="md:ml-64 flex-1 min-h-screen w-full overflow-hidden">
         <Header
           view={view}
           onAddMember={handleOpenAddMember}
@@ -181,7 +181,7 @@ export function AdminPage() {
               <MemberModal
                 mode={modal}
                 form={mForm}
-                onChange={(form) => setMForm(form)} // ✅ evita erro TS
+                onChange={(form) => setMForm(form)} 
                 onSave={handleSaveMember}
                 onClose={closeModal}
               />

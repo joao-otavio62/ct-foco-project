@@ -13,8 +13,8 @@ interface MembersTableProps {
 export function MembersTable({ members, page, totalPages, onEdit, onDelete, onPageChange }: MembersTableProps) {
   return (
     <>
-      <div className="border border-neutral-800 overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="border border-neutral-800 overflow-x-auto w-full">
+        <table className="text-sm min-w-[700px] w-full">
           <thead>
             <tr className="border-b border-neutral-800 bg-neutral-950">
               {["Nome", "Contato", "Pagamento", "Nascimento / Idade", "Altura", "Modalidade", "Horário", "Status", "Ações"].map(h => (

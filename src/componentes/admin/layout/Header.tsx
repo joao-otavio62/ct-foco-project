@@ -18,7 +18,7 @@ export function Header({ view, onAddMember, onAddStaff }: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 bg-black/90 backdrop-blur border-b border-neutral-900 px-8 py-4 flex items-center justify-between">
       <div>
-        <h1 className="font-display font-black text-2xl text-white tracking-wide">
+        <h1 className="font-display font-black text-2xl text-white tracking-wide ">
           {VIEW_TITLES[view]}
         </h1>
         <p className="text-gray-600 text-xs mt-0.5">

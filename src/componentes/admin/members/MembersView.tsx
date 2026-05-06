@@ -36,7 +36,7 @@ export function MembersView({ members, loading, onEdit, onDelete }: MembersViewP
   }
 
   return (
-    <div className="space-y-5">
+    <div className="w-full overflow-hidden p-4 space-y-4">
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
         <div className="relative flex-1 min-w-48">

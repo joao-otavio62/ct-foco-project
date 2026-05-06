@@ -139,7 +139,7 @@ export function LoginPage() {
         <div className="bg-neutral-950 border border-neutral-800 border-t-0 px-8 py-10">
           <div className="text-center mb-10">
             <div className="font-display font-black text-4xl tracking-widest mb-1">
-              CT <span className="text-red-600">FOCO</span>
+              <span className="font-black text-white">CT</span> <span className="text-red-600">FOCO</span>
             </div>
             <p className="text-gray-600 text-xs tracking-[0.3em] uppercase">Painel Administrativo</p>
             <div className="flex items-center gap-3 mt-5">
