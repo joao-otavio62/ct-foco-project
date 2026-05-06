@@ -19,9 +19,9 @@ export function DashboardView({ members, staff, loadingMembers, loadingStaff }: 
   const topModality = Object.entries(modalityCount).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "-";
 
   return (
-    <div className="">
+    <div className="w-full overflow-hidden ">
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 overflow-x-auto">
         <StatCard label="Total de Alunos"  value={members.length}  sub="cadastrados" accent />
         <StatCard label="Alunos Ativos"    value={activeMembers}   sub={`${members.length - activeMembers} inativos`} />
         <StatCard label="Equipe"           value={staff.length}    sub="profissionais" />
